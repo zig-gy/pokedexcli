@@ -8,6 +8,7 @@ import (
 
 func commandMap(cfg *config) (err error) {
 	next := cfg.nextLocationsURL
+	cache := cfg.cache
 
 	var zeroString string
 	if next == zeroString {
@@ -15,7 +16,7 @@ func commandMap(cfg *config) (err error) {
 		return fmt.Errorf("already on the last page")
 	}
 
-	locs, err := pokeapi.FetchLocations(next)
+	locs, err := pokeapi.FetchLocations(next, cache)
 	if err != nil {
 		return
 	}
@@ -30,13 +31,15 @@ func commandMap(cfg *config) (err error) {
 
 func commandMapb(cfg *config) (err error) {
 	prev := cfg.prevLocationsURL
+	cache := cfg.cache
+
 	var zeroString string
 	if prev == zeroString {
 		fmt.Println("Already on the first page")
 		return fmt.Errorf("already on the first page")
 	}
 
-	locs, err := pokeapi.FetchLocations(prev)
+	locs, err := pokeapi.FetchLocations(prev, cache)
 	if err != nil {
 		return
 	}

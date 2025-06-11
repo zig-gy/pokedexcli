@@ -5,11 +5,17 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"time"
+
+	pokecache "github.com/zig-gy/pokedexcli/internal/pokeCache"
 )
 
 func main() {
+	cache := pokecache.NewCache(5 * time.Second)
+
 	cfg := &config{
 		nextLocationsURL: "https://pokeapi.co/api/v2/location-area/",
+		cache: cache,
 	}
 
 	s := bufio.NewScanner(os.Stdin)
@@ -34,8 +40,9 @@ type cliCommand struct {
 }
 
 type config struct {
-	nextLocationsURL string
-	prevLocationsURL string
+	nextLocationsURL	string
+	prevLocationsURL	string
+	cache				*pokecache.Cache
 }
 
 func cleanInput(text string) []string {
