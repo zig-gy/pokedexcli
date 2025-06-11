@@ -2,7 +2,10 @@ package main
 
 import "fmt"
 
-func commandHelp() (err error) {
+func commandHelp(next, prev string) (outNext, outPrev string, err error) {
+	outNext = next
+	outPrev = prev
+	
 	message := `
 Welcome to the Pokedex!
 Usage:

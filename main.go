@@ -9,6 +9,8 @@ import (
 
 func main() {
 	s := bufio.NewScanner(os.Stdin)
+	var prev string
+	next := "https://pokeapi.co/api/v2/location-area/"
 	for {
 		fmt.Print("Pokedex > ")
 		s.Scan()
@@ -16,7 +18,7 @@ func main() {
 		cInput := cleanInput(input)[0]
 		val, ok := GetCommands()[cInput]
 		if ok {
-			val.callback()
+			next, prev, _ = val.callback(next, prev)
 		} else {
 			fmt.Println("Unknown command")
 		}
@@ -26,7 +28,7 @@ func main() {
 type cliCommand struct {
 	name		string
 	description	string
-	callback	func() error
+	callback	func(string, string) (string, string, error)
 }
 
 func cleanInput(text string) []string {
@@ -50,6 +52,16 @@ func GetCommands() map[string]cliCommand {
 		name: "help",
 		description: "Displays a help message",
 		callback: commandHelp,
+		},
+	"map" : {
+		name: "map",
+		description: "Displays the name of 20 locations",
+		callback: commandMap,
+		},
+	"mapb" : {
+		name: "mapb",
+		description: "Displays the name of the previous 20 locations",
+		callback: commandMapb,
 		},
 	}
 	return supportedCommands

@@ -5,7 +5,10 @@ import (
 	"os"
 )
 
-func commandExit() (err error) {
+func commandExit(next, prev string) (outNext, outPrev string, err error) {
+	outNext = next
+	outPrev = prev
+
 	_, err = fmt.Println("Closing the Pokedex... Goodbye!")
 	if err != nil {
 		return
