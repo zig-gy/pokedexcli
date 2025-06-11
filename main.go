@@ -8,9 +8,11 @@ import (
 )
 
 func main() {
+	cfg := &config{
+		nextLocationsURL: "https://pokeapi.co/api/v2/location-area/",
+	}
+
 	s := bufio.NewScanner(os.Stdin)
-	var prev string
-	next := "https://pokeapi.co/api/v2/location-area/"
 	for {
 		fmt.Print("Pokedex > ")
 		s.Scan()
@@ -18,7 +20,7 @@ func main() {
 		cInput := cleanInput(input)[0]
 		val, ok := GetCommands()[cInput]
 		if ok {
-			next, prev, _ = val.callback(next, prev)
+			val.callback(cfg)
 		} else {
 			fmt.Println("Unknown command")
 		}
@@ -28,7 +30,12 @@ func main() {
 type cliCommand struct {
 	name		string
 	description	string
-	callback	func(string, string) (string, string, error)
+	callback	func(*config) error
+}
+
+type config struct {
+	nextLocationsURL string
+	prevLocationsURL string
 }
 
 func cleanInput(text string) []string {
