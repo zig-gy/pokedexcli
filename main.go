@@ -23,10 +23,11 @@ func main() {
 		fmt.Print("Pokedex > ")
 		s.Scan()
 		input := s.Text()
-		cInput := cleanInput(input)[0]
+		words := cleanInput(input)
+		cInput := words[0]
 		val, ok := GetCommands()[cInput]
 		if ok {
-			val.callback(cfg)
+			val.callback(cfg, words[1:])
 		} else {
 			fmt.Println("Unknown command")
 		}
@@ -36,7 +37,7 @@ func main() {
 type cliCommand struct {
 	name		string
 	description	string
-	callback	func(*config) error
+	callback	func(*config, []string) error
 }
 
 type config struct {
@@ -76,6 +77,11 @@ func GetCommands() map[string]cliCommand {
 		name: "mapb",
 		description: "Displays the name of the previous 20 locations",
 		callback: commandMapb,
+		},
+	"explore" : {
+		name: "explore",
+		description: "Displays the names of the possible encounters in the area passed as argument",
+		callback: commandExplore,
 		},
 	}
 	return supportedCommands

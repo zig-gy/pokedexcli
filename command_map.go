@@ -6,7 +6,7 @@ import (
 	pokeapi "github.com/zig-gy/pokedexcli/internal/pokeAPI"
 )
 
-func commandMap(cfg *config) (err error) {
+func commandMap(cfg *config, arguments []string) (err error) {
 	next := cfg.nextLocationsURL
 	cache := cfg.cache
 
@@ -29,7 +29,7 @@ func commandMap(cfg *config) (err error) {
 	return
 }
 
-func commandMapb(cfg *config) (err error) {
+func commandMapb(cfg *config, arguments []string) (err error) {
 	prev := cfg.prevLocationsURL
 	cache := cfg.cache
 
