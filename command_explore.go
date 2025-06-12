@@ -7,6 +7,11 @@ import (
 )
 
 func commandExplore(cfg *config, arguments []string) (err error) {
+	if len(arguments) < 1 {
+		fmt.Println("You need to pass an argument for this command")
+		return fmt.Errorf("you need to pass an argument for this comamnd")
+	}
+	
 	argument := arguments[0]
 	url := fmt.Sprintf("https://pokeapi.co/api/v2/location-area/%s/", argument)
 
