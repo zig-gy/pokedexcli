@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	pokeapi "github.com/zig-gy/pokedexcli/internal/pokeAPI"
 	pokecache "github.com/zig-gy/pokedexcli/internal/pokeCache"
 )
 
@@ -16,6 +17,8 @@ func main() {
 	cfg := &config{
 		nextLocationsURL: "https://pokeapi.co/api/v2/location-area/",
 		cache: cache,
+		catchTreshold: 50,
+		pokedex: make(map[string]pokeapi.Pokemon),
 	}
 
 	s := bufio.NewScanner(os.Stdin)
@@ -24,6 +27,9 @@ func main() {
 		s.Scan()
 		input := s.Text()
 		words := cleanInput(input)
+		if len(words) < 1 {
+			continue
+		}
 		cInput := words[0]
 		val, ok := GetCommands()[cInput]
 		if ok {
@@ -44,6 +50,8 @@ type config struct {
 	nextLocationsURL	string
 	prevLocationsURL	string
 	cache				*pokecache.Cache
+	catchTreshold		int
+	pokedex				map[string]pokeapi.Pokemon
 }
 
 func cleanInput(text string) []string {
@@ -82,6 +90,11 @@ func GetCommands() map[string]cliCommand {
 		name: "explore",
 		description: "Displays the names of the possible encounters in the area passed as argument",
 		callback: commandExplore,
+		},
+	"catch" : {
+		name: "catch",
+		description: "Catch a Pokemon passed as an argument",
+		callback: commandCatch,
 		},
 	}
 	return supportedCommands

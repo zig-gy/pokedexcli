@@ -8,7 +8,7 @@ import (
 	pokecache "github.com/zig-gy/pokedexcli/internal/pokeCache"
 )
 
-func FetchPokemon(url string, cache *pokecache.Cache) ([]string, error) {
+func FetchPokemonFromLocation(url string, cache *pokecache.Cache) ([]string, error) {
 	body, ok := cache.Get(url)
 	if !ok {
 		res, err := http.Get(url)
@@ -40,10 +40,10 @@ type LocationInfo struct {
 }
 
 type PokemonEncounter struct {
-    Pokemon Pokemon `json:"pokemon"`
+    Pokemon PokemonLoc `json:"pokemon"`
 }
 
-type Pokemon struct {
+type PokemonLoc struct {
     Name string `json:"name"`
     URL  string `json:"url"`
 }
